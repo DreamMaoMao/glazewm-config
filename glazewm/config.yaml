@@ -1,7 +1,14 @@
 general:
   # Commands to run when the WM has started (e.g. to run a script or launch
   # another application). Here we are running a batch script to start Zebar.
-  startup_commands: ['shell-exec %HOMEPATH%/.glzr/scripts/shellexec.exe powershell %userprofile%/.glzr/start.ps1']
+  startup_commands: ['shell-exec %HOMEPATH%/.glzr/scripts/shellexec.exe  powershell %HOMEPATH%/.glzr/start.ps1']
+
+  # Commands to run just before the WM is shutdown.
+  # Example: The below command kills Zebar.
+  shutdown_commands: ['shell-exec taskkill /IM zebar.exe /F']
+
+  # Commands to run after the WM config is reloaded.
+  config_reload_commands: []
 
   # Whether to automatically focus windows underneath the cursor.
   focus_follows_cursor: false
@@ -25,7 +32,7 @@ gaps:
 
   # Gap between windows and the screen edge.
   outer_gap:
-    top: '50px'
+    top: '48px'
     right: '10px'
     bottom: '10px'
     left: '10px'
@@ -33,6 +40,8 @@ gaps:
 window_effects:
   # Visual effects to apply to the focused window.
   focused_window:
+    hide_title_bar:
+      enabled: true
     # Highlight the window with a colored border.
     # ** Exclusive to Windows 11 due to API limitations.
     border:
@@ -41,8 +50,10 @@ window_effects:
 
   # Visual effects to apply to non-focused windows.
   other_windows:
-    border:
+    hide_title_bar:
       enabled: true
+    border:
+      enabled: false
       color: '#a1a1a1'
 
 window_behavior:
@@ -56,10 +67,10 @@ window_behavior:
   state_defaults:
     floating:
       # Whether to center floating windows by default.
-      centered: true
+      centered: false
 
       # Whether to show floating windows as always on top.
-      shown_on_top: false
+      shown_on_top: true
 
     fullscreen: # Maximize the window if possible. If the window doesn't have a maximize button, then it'll be fullscreen'ed normally instead. maximized: false
       # Whether to show fullscreen windows as always on top.
@@ -88,24 +99,58 @@ window_rules:
 
       # Ignore rules for various 3rd-party apps.
       - window_process: { equals: 'PowerToys.PowerAccent' }
+      - window_process: { equals: 'keyviz' }
       - window_process: { equals: 'Lively' }
         window_class: { regex: 'HwndWrapper*' }
+      - window_process: { regex: 'uTools' }
+      - window_title: { regex: 'QQEdit' }
+      - window_title: { regex: '网易云音乐 安装' }
+      - window_process: { regex: 'cloudmusic' }
+        window_title: { regex: '正在安装' }
 
-  - commands: ["set-floating"]
+  - commands: ["set-floating --centered",]
     match:
+      - window_title: { regex: '任务管理器' }
       - window_title: { regex: 'qxdrag' }
+        window_process: {regex: 'python'}
       - window_title: { regex: '云视频' }
       - window_title: { regex: '为知笔记' }
+      - window_process: { regex: 'aDrive' }
+      - window_title: { regex: 'Clash' }
+      - window_title: { regex: '应用安装程序' }
+      - window_title: { equals: 'Translate' }
+      - window_process: { regex: 'DownKyi' }
+      - window_process: { regex: 'CHXSmartScreen' }
+      - window_title: { regex: '图片查看器' }
+        window_process: {regex: 'QQ'}
+      - window_title: { regex: '设置' }
+        window_process: {regex: 'QQ'}
+      - window_title: { regex: '进度' }
+      - window_title: { regex: 'Choose your Space' }
+      - window_title: { regex: '首选项' }
+      - window_title: { regex: '视频播放器' }
+        window_process: {regex: 'QQ'}
+      - window_title: { regex: 'SMPlayer - 文件属性' }
 
-  - commands: ["move --workspace 4","focus --workspace 4"]
-    match:
-      - window_title: { regex: 'Google Chrome' }
-  - commands: ["move --workspace 6","focus --workspace 6"]
-    match:
-      - window_title: { regex: 'OBS' }
+
   - commands: ["move --workspace 3","focus --workspace 3"]
     match:
-      - window_title: { regex: 'QQ' }
+      - window_process: { regex: 'QQ' }
+  - commands: ["move --workspace 4","focus --workspace 4"]
+    match:
+      - window_process: { regex: 'chrome' }
+  - commands: ["move --workspace 5","focus --workspace 5"]
+    match:
+      - window_process: { regex: 'cloudmusic' }
+  - commands: ["move --workspace 6","focus --workspace 6"]
+    match:
+      - window_process: { regex: 'obs64' }
+  - commands: ["move --workspace 7","focus --workspace 7"]
+    match:
+      - window_process: { regex: 'QuarkCloudDrive' }
+  - commands: ["move --workspace 8","focus --workspace 8",]
+    match:
+      - window_process: { regex: 'DownKyi' }
 
 binding_modes:
   # When enabled, the focused window can be resized via arrow keys or HJKL.
@@ -186,15 +231,15 @@ keybindings:
 
   # Change the focused window to be tiling.
   - commands: ['toggle-tiling']
-    bindings: ['alt+t']
+    bindings: ['ctrl+shift+\']
 
   # Change the focused window to be fullscreen.
   - commands: ['toggle-fullscreen']
     bindings: ['alt+a']
 
   # Minimize focused window.
-  - commands: ['toggle-minimized']
-    bindings: ['Lwin+i']
+  # - commands: ['toggle-minimized']
+  #   bindings: ['Lwin+i']
 
   # Close focused window.
   - commands: ['close']
@@ -210,7 +255,7 @@ keybindings:
 
   # Redraw all windows.
   - commands: ['wm-redraw']
-    bindings: ['alt+shift+w']
+    bindings: ['alt+w']
 
   # Launch CMD terminal. Alternatively, use `shell-exec wt` or
   # `shell-exec %ProgramFiles%/Git/git-bash.exe` to start Windows
@@ -219,9 +264,9 @@ keybindings:
     bindings: ['alt+enter']
 
   # Focus the next/previous workspace defined in `workspaces` config.
-  - commands: ['focus --next-workspace']
+  - commands: ['focus --next-active-workspace']
     bindings: ['ctrl+right']
-  - commands: ['focus --prev-workspace']
+  - commands: ['focus --prev-active-workspace']
     bindings: ['ctrl+left']
 
   # Focus the workspace that last had focus.
@@ -250,14 +295,14 @@ keybindings:
 
   # Move the focused window's parent workspace to a monitor in a given
   # direction.
-  # - commands: ['move-workspace --direction left']
-  #   bindings: ['alt+shift+a']
-  # - commands: ['move-workspace --direction right']
-  #   bindings: ['alt+shift+f']
-  # - commands: ['move-workspace --direction up']
-  #   bindings: ['alt+shift+d']
-  # - commands: ['move-workspace --direction down']
-  #   bindings: ['alt+shift+s']
+  - commands: ['move-workspace --direction left']
+    bindings: ['ctrl+shift+Left']
+  - commands: ['move-workspace --direction right']
+    bindings: ['ctrl+shift+Right']
+  - commands: ['move-workspace --direction up']
+    bindings: ['ctrl+shift+Up']
+  - commands: ['move-workspace --direction down']
+    bindings: ['ctrl+shift+Down']
 
   # Move focused window to a workspace defined in `workspaces` config.
   - commands: ['move --workspace 1', 'focus --workspace 1']
@@ -284,25 +329,26 @@ keybindings:
     bindings: ["Alt+Enter"]
   - commands: ["shell-exec wt yazi"]
     bindings: ["Ctrl+LWin+Enter"]
-  - commands: ["shell-exec wt wsl -d Ubuntu"]
+  - commands: ["shell-exec wt wsl -d Arch"]
     bindings: ["Ctrl+Alt+Enter"]
 
-  # 需要结合ahk一起用避免win键菜单弹窗
-  - commands: ["shell-exec %HOMEPATH%/.glzr/scripts/shellexec.exe %HOMEPATH%/.glzr/scripts/gj.exe fr"] 
+  - commands: ["focus --next-workspace"] 
     bindings: ["Lwin+Right"]
-  - commands: ["shell-exec %HOMEPATH%/.glzr/scripts/shellexec.exe %HOMEPATH%/.glzr/scripts/gj.exe fl"] 
+  - commands: ["focus --prev-workspace"] 
     bindings: ["Lwin+Left"]
 
-  - commands: ["shell-exec %HOMEPATH%/.glzr/scripts/shellexec.exe %HOMEPATH%/.glzr/scripts/gj.exe mr"] 
+  - commands: ["move --next-workspace","focus --next-workspace"] 
     bindings: ["Ctrl+Lwin+Right"]
-  - commands: ["shell-exec %HOMEPATH%/.glzr/scripts/shellexec.exe %HOMEPATH%/.glzr/scripts/gj.exe ml"] 
+  - commands: ["move --prev-workspace","focus --prev-workspace"] 
     bindings: ["Ctrl+Lwin+Left"]
 
-  - commands: ["shell-exec %HOMEPATH%/.glzr/scripts/shellexec.exe powershell ~/script/clash-toggle.ps1"]
+  - commands: ["shell-exec %HOMEPATH%/.glzr/scripts/shellexec.exe nu ~/script/clash.nu"]
     bindings: ["Ctrl+Enter"]
+  - commands: ["shell-exec %HOMEPATH%/.glzr/scripts/shellexec.exe powershell ~/script/keyviz-toggle.ps1"]
+    bindings: ["Lwin+k"]
 
-  # - commands: ["shell-exec chrome"]
-  #   bindings: ["LWin+Enter"]
+  - commands: ["shell-exec chrome"]
+    bindings: ["LWin+Enter"]
 
-  # - commands: ["shell-exec pythonw C:/Users/wuruq/script/qtmv.py"]
-  #   bindings: ["LWin+Alt+Enter"]
+  - commands: ["shell-exec pythonw C:/Users/wuruq/script/qtmv.py"]
+    bindings: ["LWin+Alt+Enter"]

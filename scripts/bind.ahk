@@ -1,143 +1,77 @@
+
 #SingleInstance Force
-#UseHook  ; 启用键盘钩子
-SetKeyDelay, -1  ; 禁用按键延迟
+;#MaxHotkeysPerInterval 100, 1
+;#UseHook  
+;SetKeyDelay, -1  
 
-LWinDown := false  ; 初始化一个变量来跟踪Windows键是否被按下
 
-LWin::  ; 当Windows键被按下时
-    LWinDown := true  ; 设置变量为true
-    Send {Blind}{vkE8} ; 发送无效码禁止单独win键触发菜单
+; Detects whether you are currently in the task overview
+#IfWinActive ahk_class XamlExplorerHostIslandWindow ahk_exe explorer.exe
+RButton::
+  Send {MButton}
 return
 
-LWin Up::  ; 当Windows键被松开时
-    LWinDown := false  ; 重置变量
-    Send {Blind}{vkE8} ; 发送无效码禁止单独win键触发菜单
+!q::
+  Send {Delete}
 return
 
-;;;;;;;;;;;;;;;;;;;;win+key bind;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-; win + shift + up
-+Up::
-if (LWinDown) {
-    Send {Blind}{LWin Down}+{Up}{LWin Up}
-} else {
-    Send +{Up}  
-}
+!Left::
+  Send {Left}
 return
 
-; win + shift + down
-+Down::
-if (LWinDown) {
-    Send {Blind}{LWin Down}+{Down}{LWin Up}
-} else {
-    Send +{Down}  
-}
+!Right::
+  Send {Right}
 return
 
-; win + shift + right
-+Right::
-if (LWinDown) {
-    Send {Blind}{LWin Down}+{Right}{LWin Up}
-} else {
-    Send +{Right}  
-}
+!Up::
+  Send {Up}
 return
 
-; win + shift + left
-+Left::
-if (LWinDown) {
-    Send {Blind}{LWin Down}+{Left}{LWin Up}
-} else {
-    Send +{Left}  
-}
+!Down::
+  Send {Down}
 return
 
-; win + r
-r::
-if (LWinDown) {
-    Send {Blind}{LWin Down}{r}{LWin Up}
-} else {
-    Send {r}  
-}
+!Tab::
+  Send {Enter}
 return
 
-; win + Return -> google chrome
-Return::
-if (LWinDown) {
-    Run,chrome
-} else {
-    Send {Return}  
-}
+MButton::
+  Send {Blind}{LButton down}{LButton up}
+  Run, %HOMEPATH%/.glzr/scripts/shellexec.exe glazewm command set-fullscreen
 return
 
-; ctrl + win + return
-^Return::
-if (LWinDown) {
-    Run,wt yazi
-} else {
-    Send ^{Return}  
-}
+#IfWinActive  ; non overview bind
+
+MButton::
+  Run, %HOMEPATH%/.glzr/scripts/shellexec.exe glazewm command toggle-fullscreen
 return
 
 
-; ctrl + win + right
-^Right::
-if (LWinDown) {
-    Run,%HOMEPATH%/.glzr/scripts/shellexec.exe %HOMEPATH%/.glzr/scripts/gj.exe mr
-} else {
-    Send ^{Right}  
-}
+; disable win key to open menu,~表示完全匹配单个按键，不然会连组合按键也匹配
+~LWin::  
+    LWinDown := true  
+    Send {Blind}{vkE8} 
 return
 
-; ctrl + win + left
-^Left::
-if (LWinDown) {
-    Run,%HOMEPATH%/.glzr/scripts/shellexec.exe %HOMEPATH%/.glzr/scripts/gj.exe ml
-} else {
-    Send ^{Left}  
-}
+!Tab::  
+    LWinDown := true  
+    Send {LWin down}{Tab down}{LWin up}{Tab up}
 return
 
+;~LWin Up::  
+;    LWinDown := false  
+;    Send {Blind}{vkE8} 
+;return
 
-; win + Right -> next workspace
-Right::
-if (LWinDown) {  
-    Run,%HOMEPATH%/.glzr/scripts/shellexec.exe %HOMEPATH%/.glzr/scripts/gj.exe fr
-    ; Send {Blind}{LWin Down}{Right}{LWin Up}
-} else {
-    Send {Right}
-}
-return
-
-; win + Left -> prev workspace
-Left::
-if (LWinDown) {  
-    Run,%HOMEPATH%/.glzr/scripts/shellexec.exe %HOMEPATH%/.glzr/scripts/gj.exe fl
-} else {
-    Send {Left}
-}
+^!a::
+    Send {PrintScreen}
 return
 
 
-; alt + WheelUp -> prev workspace
-WheelUp::
-if (LWinDown) {
-    Run, shellexec glazewm command focus --prev-workspace
-} else {
-    send {WheelUp}
-}
-Return
+#WheelUp::
+  Run, %HOMEPATH%/.glzr/scripts/shellexec.exe glazewm command focus --prev-active-workspace
+return
 
-; alt + WheelUp - > next workspace
-WheelDown::
-if (LWinDown) {
-    Run, shellexec glazewm command focus --next-workspace
-} else {
-    send {WheelDown}
-}
-Return
-
-; middle mouse button - > toggle fullscreen
-MButton:: 
-Run, shellexec glazewm command toggle-fullscreen
+#WheelDown::
+  Run, %HOMEPATH%/.glzr/scripts/shellexec.exe glazewm command focus --next-active-workspace
 return

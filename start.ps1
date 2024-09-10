@@ -1,8 +1,8 @@
-# 获取所有监视器的信息
-$monitors = zebar monitors
-# 对每个监视器运行zebar命令
-foreach ($monitor in $monitors) {
-    Start-Process -WindowStyle Hidden -FilePath "zebar" -ArgumentList "open bar --args $monitor"
-}
-
-Start-Process "$env:HOMEPATH\.glzr\scripts\bind.ahk"
+start zebar
+start $HOME/.glzr/scripts/bind.ahk
+start $HOME/.glzr/scripts/hotarea.ahk
+start $HOME/.glzr/scripts/autohidecursor.ahk
+# start "D:\Program\autohidecursor/AutoHideMouseCursor_x64_p.exe"
+start "C:\Users\wuruq\AppData\Local\Programs\utools\uTools.exe"
+start "D:\Program Files\AltSnap\AltSnap.exe"
+start "C:\Program Files\Flameshot\bin\flameshot.exe"
