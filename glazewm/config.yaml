@@ -5,7 +5,7 @@ general:
 
   # Commands to run just before the WM is shutdown.
   # Example: The below command kills Zebar.
-  shutdown_commands: ['shell-exec taskkill /IM zebar.exe /F']
+  shutdown_commands: ['shell-exec %HOMEPATH%/.glzr/scripts/shellexec.exe  powershell %HOMEPATH%/.glzr/exit.ps1']
 
   # Commands to run after the WM config is reloaded.
   config_reload_commands: []
