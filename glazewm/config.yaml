@@ -32,7 +32,7 @@ gaps:
 
   # Gap between windows and the screen edge.
   outer_gap:
-    top: '48px'
+    top: '50px'
     right: '10px'
     bottom: '10px'
     left: '10px'
@@ -45,7 +45,7 @@ window_effects:
     # Highlight the window with a colored border.
     # ** Exclusive to Windows 11 due to API limitations.
     border:
-      enabled: true
+      enabled: false
       color: '#ca91ff'
 
   # Visual effects to apply to non-focused windows.
@@ -197,13 +197,13 @@ keybindings:
     bindings: ['LWin+shift+down']
 
   # Resize focused window by a percentage or pixel amount.
-  - commands: ['resize --width -2%']
+  - commands: ['resize --width -1%']
     bindings: ['alt+ctrl+left']
-  - commands: ['resize --width +2%']
+  - commands: ['resize --width +1%']
     bindings: ['alt+ctrl+right']
-  - commands: ['resize --height +2%']
+  - commands: ['resize --height -1%']
     bindings: ['alt+ctrl+up']
-  - commands: ['resize --height -2%']
+  - commands: ['resize --height +1%']
     bindings: ['alt+ctrl+down']
 
   # As an alternative to the resize keybindings above, resize mode enables

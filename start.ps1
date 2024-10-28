@@ -1,4 +1,3 @@
-start zebar
 start $HOME/.glzr/scripts/bind.ahk
 start $HOME/.glzr/scripts/hotarea.ahk
 start $HOME/.glzr/scripts/autohidecursor.ahk
@@ -6,3 +5,6 @@ start $HOME/.glzr/scripts/autohidecursor.ahk
 start "C:\Users\wuruq\AppData\Local\Programs\utools\uTools.exe"
 start "D:\Program Files\AltSnap\AltSnap.exe"
 start "C:\Program Files\Flameshot\bin\flameshot.exe"
+start zebar
+Start-Sleep -Seconds 2
+start "C:\Users\wuruq\refer\tacky-borders\target\release\tacky-borders.exe"
