@@ -3,6 +3,7 @@
 
 # dependcy
 - autohotkey-v1
+- [tacky-borders](https://github.com/lukeyou05/tacky-borders)
 
 # some file explain
 - scripts/bind.ahk

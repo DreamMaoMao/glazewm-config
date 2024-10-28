@@ -7,4 +7,4 @@ start "D:\Program Files\AltSnap\AltSnap.exe"
 start "C:\Program Files\Flameshot\bin\flameshot.exe"
 start zebar
 Start-Sleep -Seconds 2
-start "C:\Users\wuruq\refer\tacky-borders\target\release\tacky-borders.exe"
+start tacky-borders
