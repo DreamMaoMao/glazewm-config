@@ -63,7 +63,7 @@ return
 ;    Send {Blind}{vkE8} 
 ;return
 
-^!a::
+^!i::
     Send {PrintScreen}
 return
 
