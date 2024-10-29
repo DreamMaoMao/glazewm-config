@@ -30,7 +30,6 @@ HotKey ~*%A_LoopField%, Hoty
 HotKey ~$*Space, Hoty
 HotKey ~$*Backspace, Hoty
 HotKey ~$*Delete, Hoty
-HotKey ~$*Return, Hoty
 return
 
 

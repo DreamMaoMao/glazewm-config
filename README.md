@@ -1,9 +1,13 @@
 # glazewm-config
 ![输入图片说明](image.png)
 
-# dependcy
-- autohotkey-v1
+# dependcy(need to add this tool Execution file path to `Path` env)
+- [autohotkey-v1](https://www.autohotkey.com/)
 - [tacky-borders](https://github.com/lukeyou05/tacky-borders)
+- [AltSnap](https://github.com/alex-ds13/AltSnap)
+- [flameshot](https://github.com/flameshot-org/flameshot)
+- [wt](https://github.com/microsoft/terminal)
+- [nushell](https://github.com/nushell/nushell)
 
 # some file explain
 - scripts/bind.ahk
